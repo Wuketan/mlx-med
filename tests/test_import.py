@@ -1,10 +1,12 @@
+from importlib.metadata import version
+
 import mlx.core as mx
 
 import mlx_med
 
 
 def test_version():
-    assert mlx_med.__version__ != "0.0.0"
+    assert mlx_med.__version__ == version("mlx-med")
 
 
 def test_mlx_available():
