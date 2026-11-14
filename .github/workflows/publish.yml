@@ -1,0 +1,22 @@
+name: Publish to PyPI
+
+# Runs when a GitHub Release is published. Authenticates to PyPI with
+# Trusted Publishing (OIDC), so no API token or secret is stored anywhere.
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: macos-latest # mlx only installs on Apple Silicon
+    environment: pypi
+    permissions:
+      id-token: write # required for Trusted Publishing
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked
+      - run: uv run pytest
+      - run: uv build
+      - run: uv publish
